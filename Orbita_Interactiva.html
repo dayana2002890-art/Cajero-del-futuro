@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Órbita · La ruta a casa</title><!-- DISEÑO: CSS -->
+<style>
+:root{color-scheme:dark;--bg:#10131c;--panel:#1b202b;--border:#333d4b;--muted:#a9b4c3;--ink:#f5f2e9;--lime:#d4f28a;--orange:#ffab74}*{box-sizing:border-box}body{margin:0;color:var(--ink);background:var(--bg);font:15px/1.6 Arial,Helvetica,sans-serif}main{max-width:1280px;margin:auto;padding:0 32px}header{padding:23px 0;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}.logo{font-size:24px;letter-spacing:3px;font-weight:900}.edition{color:var(--muted);font-size:10px;letter-spacing:2px;margin-left:24px}.intro{display:flex;align-items:end;justify-content:space-between;padding:35px 0 25px;gap:24px}.eyebrow{font-size:10px;letter-spacing:2px;color:var(--lime);font-weight:bold;margin:0 0 10px}h1{font-size:clamp(30px,4.3vw,51px);letter-spacing:-2px;line-height:1.15;margin:0}h1 em{color:var(--lime);font-style:normal}.intro>p{max-width:320px;color:var(--muted);font-size:13px}.hud{display:grid;grid-template-columns:1.4fr 1.3fr 1.2fr 1fr 1fr;background:var(--panel);border:1px solid var(--border);border-radius:13px;padding:17px 0}.hud div{padding:0 22px;border-right:1px solid var(--border)}.hud div:last-child{border:0}.hud small{display:block;color:var(--muted);font-size:11px}.hud b{display:block;font-size:21px;white-space:nowrap}.hud div:first-child b{color:var(--lime)}#route{display:flex;justify-content:space-between;margin:23px 0 15px;gap:7px}#route span{flex:1;border-bottom:2px solid var(--border);padding-bottom:10px;color:var(--muted);font-size:12px}#route span.current{border-color:var(--orange);color:var(--orange)}#route span.visited{border-color:var(--lime);color:var(--lime)}.viewport{position:relative;overflow:hidden;border:1px solid #444555;border-radius:16px;background:#171a2c}.world-label{position:absolute;top:20px;left:22px;right:22px;display:flex;justify-content:space-between;pointer-events:none;z-index:1;font-size:11px;letter-spacing:2px;text-shadow:0 2px 4px #000}.world-label span:first-child{color:var(--orange)}canvas{width:100%;height:440px;display:block;touch-action:pan-y;outline-offset:-4px}#toast{position:absolute;bottom:13px;left:50%;transform:translateX(-50%);background:#10131eea;border:1px solid #5b6170;border-radius:30px;padding:9px 20px;max-width:94%;width:max-content;pointer-events:none;color:#fff;font-size:12px;text-align:center;z-index:2}.under{display:flex;justify-content:space-between;align-items:center;gap:30px;padding:23px 0 12px}.under h2{margin:0;font-size:21px}.under p:not(.eyebrow){color:var(--muted);font-size:12px;max-width:710px}.keyboard{display:flex;flex-direction:column;gap:5px;font-size:11px;color:var(--muted);flex-shrink:0}kbd{font:11px monospace;display:inline-block;background:#2a3240;border:1px solid #50596a;border-radius:4px;padding:1px 6px;color:white}.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}button{cursor:pointer;border:0;border-radius:8px;background:var(--lime);padding:12px 16px;font:inherit;font-size:13px;font-weight:bold;color:#172411;transition:filter .15s,transform .15s}button:hover:not(:disabled){filter:brightness(1.12);transform:translateY(-1px)}button:disabled{opacity:.45;cursor:not-allowed}.quick button,.quiet{border:1px solid var(--border);background:var(--panel);color:var(--ink)}:focus-visible{outline:3px solid var(--orange);outline-offset:3px}.touch{display:flex;justify-content:center;gap:12px;margin:16px 0}.touch button{min-width:64px;background:#30394a;color:white;touch-action:none;user-select:none}.rules{margin-top:22px;border-top:1px solid var(--border);padding:20px 0;font-size:12px;color:var(--muted)}summary{cursor:pointer;color:var(--ink)}footer{font-size:10px;color:var(--muted);letter-spacing:1px;padding:20px 0 30px}.tablewrap{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:12px}td,th{border-bottom:1px solid var(--border);text-align:left;padding:12px 5px}dialog{width:min(480px,calc(100% - 32px));max-height:90dvh;overflow:auto;border:1px solid #5d687d;border-radius:20px;padding:28px;background:#1b2230;color:var(--ink);box-shadow:0 30px 100px #0008}dialog::backdrop{background:#070b15b8;backdrop-filter:blur(5px)}dialog h2{font-size:28px;line-height:1.2;margin:12px 0}dialog p{font-size:13px;color:#c2ccda}.dialog-head{display:flex;justify-content:space-between;align-items:center}.close{background:transparent;color:white;padding:2px 10px;font-size:20px}label{display:block;font-size:12px;margin:18px 0 7px}input{width:100%;background:#0e1521;color:white;border:1px solid #667386;padding:12px;border-radius:8px;font:inherit}#shopContent button{width:100%;margin-top:12px}.price{display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding:10px 0;gap:15px}.price b{color:var(--lime);text-align:right}#shopMessage{color:var(--orange);min-height:24px}#end button{width:100%;margin-top:10px}#travel{position:absolute;inset:0;background:#0b1226ed;display:flex;align-items:center;justify-content:center;flex-direction:column;z-index:3}#travel h2{font-size:15px;font-weight:normal;letter-spacing:3px;margin:20px 0 0}#travel p{color:var(--lime);font-size:30px;margin:0}.travel-ship{font-size:60px;animation:fly 1s ease-in-out infinite}.travel-track{width:180px;height:3px;background:#29344c;overflow:hidden;margin-top:22px}.travel-track i{display:block;width:40%;height:100%;background:var(--lime);animation:load 1s linear infinite}@keyframes fly{50%{transform:translate(8px,-8px)}}@keyframes load{from{transform:translateX(-100%)}to{transform:translateX(350%)}}[hidden]{display:none!important}@media(max-width:700px){main{padding:0 14px}.edition{display:none}.intro{padding:25px 0 20px;display:block}.intro>p{max-width:100%;margin-bottom:0}h1{font-size:35px}.hud{grid-template-columns:repeat(6,1fr);row-gap:14px;padding:14px 0}.hud div{grid-column:span 2;padding:0 10px}.hud div:nth-child(4),.hud div:nth-child(5){grid-column:span 3}.hud b{font-size:16px}.hud small{font-size:9px}.quick{grid-template-columns:1fr 1fr}.quick button{font-size:12px}canvas{height:360px}.world-label{left:13px;right:13px;font-size:9px;letter-spacing:1px}.under{display:block}.keyboard{display:none}#route span{font-size:10px}.logo{font-size:19px}header button{font-size:11px;padding:8px}#toast{font-size:10px;padding:8px 12px}.under h2{font-size:19px}}@media(prefers-reduced-motion:reduce){button{transition:none}.travel-ship,.travel-track i{animation:none}}
+
+</style></head>
+<body><main>
+<header><div><span class="logo">✦ ÓRBITA</span><span class="edition">LA RUTA A CASA</span></div><button id="restart" class="quiet">↺ Nueva misión</button></header>
+<section class="intro"><div><p class="eyebrow">AVENTURA ESPACIAL / CAJERO DEL FUTURO</p><h1>Tu próximo paso.<br><em>Un mundo más cerca.</em></h1></div><p>Camina hasta el cajero, retira créditos y compra suministros. Tu destino final es la Luna.</p></section>
+<section class="hud" aria-label="Recursos de tu misión"><div><small>Presupuesto total</small><b id="total"></b></div><div><small>Cuenta bancaria</small><b id="bank"></b></div><div><small>En tu billetera</small><b id="wallet"></b></div><div><small>Combustible</small><b id="fuel"></b></div><div><small>Alimentos</small><b id="food"></b></div></section>
+<nav id="route" aria-label="Ruta espacial"></nav>
+<section class="viewport"><div class="world-label"><span id="worldTag"></span><span id="location"></span></div><canvas id="game" tabindex="0" aria-label="Mapa del astronauta. Usa flechas o A y D para caminar, E para interactuar y espacio para saltar."></canvas><div id="toast" role="status" aria-live="polite"></div><div id="travel" hidden><span class="travel-ship">🚀</span><h2>Próxima parada</h2><p id="travelName"></p><div class="travel-track"><i></i></div></div></section>
+<section class="under"><div><p class="eyebrow" id="missionLabel"></p><h2 id="missionTitle"></h2><p id="missionText"></p></div><div class="keyboard"><span><kbd>←</kbd> <kbd>→</kbd> Caminar</span><span><kbd>E</kbd> Interactuar</span><span><kbd>Espacio</kbd> Saltar</span></div></section>
+<div class="quick"><button data-go="bank">🏧 Ir al cajero</button><button data-go="food">🥗 Ir a la tienda</button><button data-go="fuel">⛽ Ir a la gasolinera</button><button data-go="ship">🚀 Ir a la nave</button></div>
+<div class="touch"><button id="left" aria-label="Caminar a la izquierda">◀</button><button id="interact">Interactuar · E</button><button id="right" aria-label="Caminar a la derecha">▶</button></div>
+<details class="rules"><summary>Cómo jugar y registro de movimientos</summary><p>Empiezas con USD 100.000 en el banco y la billetera vacía. Acércate al cajero para retirar dinero. Las tiendas y la nave cobran desde tu billetera. Puedes devolver dinero al banco. Cada vuelo consume 10 unidades de combustible y 2 raciones, más la tarifa indicada.</p><p>Haz clic en una estación o en “Ir a…” para que el astronauta camine hasta ella. También puedes moverte con A/D o las flechas y pulsar E al llegar. Las compras solo se realizan en la estación correspondiente. En pantalla táctil puedes mantener pulsadas las flechas.</p><p>Los precios cambian en cada parada. No hay préstamos ni ingresos infinitos. Si ya no puedes financiar el próximo vuelo, la misión termina. Se gana al llegar a la Luna con dinero disponible. La partida se conserva mientras esta página esté abierta; recargar empieza de nuevo.</p><p>Ruta ficticia: Marte → Fobos → Deimos → Tierra → Luna. Fobos, Deimos y la Luna son satélites; las distancias, precios y consumos se simplifican para el juego.</p><div class="tablewrap"><table><thead><tr><th>Operación</th><th>Importe</th><th>Total restante</th></tr></thead><tbody id="history"></tbody></table></div></details>
+<footer>HECHO PARA EXPLORAR · Proyecto académico en HTML, CSS y JavaScript.</footer>
+</main>
+<dialog id="shop"><form method="dialog" class="dialog-head"><span class="eyebrow" id="shopTag">ESTACIÓN</span><button class="close" aria-label="Cerrar estación">✕</button></form><h2 id="shopTitle"></h2><p id="shopDesc"></p><div id="shopContent"></div><p id="shopMessage" role="status" aria-live="polite"></p></dialog>
+<dialog id="end"><p class="eyebrow">INFORME DE MISIÓN</p><h2 id="endTitle"></h2><p id="endText"></p><button id="endClose">Continuar explorando</button><button id="endRestart" class="quiet">Nueva misión</button></dialog>
+<!-- REGLAS Y MOVIMIENTO: JAVASCRIPT -->
+<script>
+"use strict";
+// ÓRBITA — Variables, funciones, condicionales, operaciones y ciclos.
+// El canvas dibuja el mundo. requestAnimationFrame anima al astronauta.
+const $ = id => document.getElementById(id);
+const money = n => "USD " + n.toLocaleString("es-CO");
+const worlds = [
+  {name:"Marte",kind:"PLANETA / BASE ARES",sky:["#221e36","#a35c51"],ground:"#ac6550",rock:"#854a42",planet:"#e8c4a1",fuel:1000,food:500,fee:2000,event:"Abandona la base Ares y alcanza Fobos. Prepara el primer salto."},
+  {name:"Fobos",kind:"SATÉLITE / PUESTO UMBRA",sky:["#0c172a","#37465c"],ground:"#6d7380",rock:"#484f62",planet:"#b86b54",fuel:1200,food:600,fee:5000,event:"La estación cobra asistencia de navegación. Tu próxima parada es Deimos."},
+  {name:"Deimos",kind:"SATÉLITE / REFUGIO POLVO",sky:["#201638","#514467"],ground:"#8f829a",rock:"#62546d",planet:"#cc745a",fuel:1400,food:800,fee:8000,event:"Una tormenta de polvo dañó el escudo. La tarifa incluye la reparación antes de viajar a la Tierra."},
+  {name:"Tierra",kind:"PLANETA / PUERTO AZUL",sky:["#0a2342","#397484"],ground:"#457d77",rock:"#285d60",planet:"#b1b6cb",fuel:1100,food:700,fee:5000,event:"Estás cerca de casa. Consigue los recursos y paga el permiso de aterrizaje lunar."},
+  {name:"Luna",kind:"SATÉLITE / BASE SELENE",sky:["#080f26","#273654"],ground:"#9b9daa",rock:"#6c7181",planet:"#619bb8",fuel:1000,food:500,fee:0,event:"¡Llegaste a la base Selene! Puedes seguir caminando y visitar sus estaciones."}
+];
+const stations = [{id:"bank",x:175,name:"ORBIT BANK",sub:"CAJERO",color:"#d4f28a"},{id:"food",x:475,name:"COSMO MARKET",sub:"ALIMENTOS",color:"#ffb185"},{id:"fuel",x:785,name:"NOVA FUEL",sub:"COMBUSTIBLE",color:"#8ddde7"},{id:"ship",x:1125,name:"TU NAVE",sub:"EMBARQUE",color:"#d9c0ff"}];
+let bank=100000, wallet=0, fuel=0, food=0, world=0, ended=false, travelling=false;
+let activeStation=null, target=null, autoStation=null, camera=0, clock=0, lastTime=0;
+const player={x:75,jump:0,vy:0,facing:1};
+const keys={left:false,right:false};
+const history=[];
+const canvas=$("game"), ctx=canvas.getContext("2d");
+let screenW=1000, screenH=440;
+function total(){return bank+wallet;}
+function log(text,amount){history.unshift({text,amount,total:total()});}
+function toast(text){$("toast").textContent=text;}
+function showShopMessage(text){$("shopMessage").textContent=text;}
+function minimumNext(){
+  if(world===worlds.length-1)return 0;
+  return Math.max(0,10-fuel)*worlds[world].fuel+Math.max(0,2-food)*worlds[world].food+worlds[world].fee;
+}
+function updateHUD(){
+  $("total").textContent=money(total());$("bank").textContent=money(bank);$("wallet").textContent=money(wallet);
+  $("fuel").textContent=fuel+" unidades";$("food").textContent=food+" raciones";
+  $("worldTag").textContent=worlds[world].kind;$("location").textContent=worlds[world].name.toUpperCase();
+  $("missionLabel").textContent=world===4?"DESTINO ALCANZADO":"MISIÓN "+(world+1)+" DE 4";
+  $("missionTitle").textContent=world===4?"Bienvenida a casa, comandante.":worlds[world].name+" → "+worlds[world+1].name;
+  $("missionText").textContent=worlds[world].event+(world<4?" Cada vuelo: 10 de combustible + 2 raciones + "+money(worlds[world].fee)+". Te falta financiar como mínimo "+money(minimumNext())+".":"");
+  $("route").replaceChildren();
+  for(let i=0;i<worlds.length;i++){
+    const s=document.createElement("span");s.textContent=(i<world?"✓ ":i===world?"● ":"○ ")+worlds[i].name;
+    s.className=i===world?"current":i<world?"visited":"";$("route").appendChild(s);
+  }
+  $("history").replaceChildren();
+  for(const item of history){const tr=document.createElement("tr");for(const value of [item.text,(item.amount<0?"−":"")+money(Math.abs(item.amount)),money(item.total)]){const td=document.createElement("td");td.textContent=value;tr.appendChild(td);}$("history").appendChild(tr);}
+}
+function clearMotion(){keys.left=false;keys.right=false;target=null;autoStation=null;}
+function reset(){
+  clearMotion();bank=100000;wallet=0;fuel=0;food=0;world=0;ended=false;travelling=false;activeStation=null;
+  player.x=75;player.jump=0;player.vy=0;camera=0;history.length=0;
+  if($("shop").open)$("shop").close();if($("end").open)$("end").close();$("travel").hidden=true;
+  log("Presupuesto inicial en el banco",100000);updateHUD();toast("Primero, camina hasta ORBIT BANK para retirar créditos.");
+}
+function finish(won){
+  ended=true;clearMotion();if($("shop").open)$("shop").close();
+  $("endTitle").textContent=won?"🌙 La Luna te da la bienvenida.":"La misión necesita un nuevo comienzo.";
+  $("endText").textContent=won?"Completaste los cuatro vuelos y llegaste con "+money(total())+" entre tu cuenta y billetera. ¡Misión cumplida!":"El dinero restante no alcanza para comprar los suministros que faltan y pagar el próximo vuelo. Reinicia y compra solo lo necesario.";
+  $("endClose").textContent=won?"Explorar la base lunar":"Ver mi última estación";
+  $("end").showModal();toast(won?"Misión cumplida. Explora la base lunar.":"Misión terminada. Pulsa Nueva misión para intentarlo otra vez.");
+}
+function checkFunds(){if(world<4 && total()<minimumNext())finish(false);}
+function goTo(id){
+  if(travelling||$("shop").open||$("end").open)return;
+  const station=stations.find(s=>s.id===id);if(!station)return;
+  keys.left=false;keys.right=false;target=station.x;autoStation=id;
+  toast("Caminando hacia "+station.name+"…");canvas.focus({preventScroll:true});
+}
+function nearStation(){let nearest=null;for(const s of stations){if(Math.abs(player.x-s.x)<90 && (!nearest||Math.abs(player.x-s.x)<Math.abs(player.x-nearest.x)))nearest=s;}return nearest;}
+function interact(){if(travelling||$("shop").open||$("end").open)return;const station=nearStation();if(station)openStation(station.id);else toast("Acércate a una estación. También puedes usar los botones «Ir a…».");}
+function quantity(){const raw=$("quantity").value.trim();const n=Number(raw);if(!raw||!Number.isSafeInteger(n)||n<1){showShopMessage("Escribe una cantidad entera mayor que cero.");return null;}return n;}
+function transfer(kind){
+  if(activeStation!=="bank"||Math.abs(player.x-175)>=90)return;
+  if(ended&&world<4){showShopMessage("Reinicia la misión para continuar.");return;}
+  const n=quantity();if(n===null)return;
+  if(kind==="withdraw"){
+    if(n>bank){showShopMessage("Tu cuenta no tiene ese saldo. No se retiró dinero.");return;}bank-=n;wallet+=n;log("Retiro de "+money(n)+" a la billetera (transferencia interna)",0);showShopMessage("Retiraste "+money(n)+". Ya puedes pagar en las estaciones.");
+  }else{if(n>wallet){showShopMessage("No tienes esa cantidad en la billetera.");return;}wallet-=n;bank+=n;log("Depósito de "+money(n)+" al banco (transferencia interna)",0);showShopMessage("Depositaste "+money(n)+" en tu cuenta.");}
+  updateHUD();refreshBankLabels();
+}
+function refreshBankLabels(){if($("bankStatus"))$("bankStatus").textContent="Cuenta: "+money(bank)+" · Billetera: "+money(wallet);}
+function buy(resource){
+  if(activeStation!==resource||!$("shop").open)return;
+  const s=stations.find(s=>s.id===resource);if(Math.abs(player.x-s.x)>=90)return;
+  if(ended&&world<4){showShopMessage("La misión terminó. Puedes iniciar una nueva.");return;}
+  const n=quantity();if(n===null)return;
+  const capacity=resource==="fuel"?40:16, stock=resource==="fuel"?fuel:food;
+  if(n+stock>capacity){showShopMessage("Capacidad máxima: "+capacity+(resource==="fuel"?" unidades de combustible.":" raciones."));return;}
+  const price=worlds[world][resource], cost=n*price;
+  if(cost>wallet){showShopMessage("Billetera insuficiente: necesitas "+money(cost)+". Visita el cajero para retirar dinero.");return;}
+  wallet-=cost;if(resource==="fuel")fuel+=n;else food+=n;
+  log(worlds[world].name+": compra de "+n+(resource==="fuel"?" de combustible":" raciones"),-cost);
+  showShopMessage("✓ Compra completada por "+money(cost)+". Suministros cargados en la nave.");
+  $("stockStatus").textContent="Billetera: "+money(wallet)+" · En la nave: "+(resource==="fuel"?fuel+" unidades":food+" raciones");
+  updateHUD();checkFunds();
+}
+function startFlight(){
+  if(activeStation!=="ship"||travelling||world===4||ended)return;
+  if(Math.abs(player.x-1125)>=90)return;
+  if(fuel<10||food<2){showShopMessage("Faltan suministros: necesitas 10 de combustible y 2 raciones. Visita las estaciones.");return;}
+  if(wallet<worlds[world].fee){showShopMessage("Retira dinero del cajero: la tarifa de vuelo se paga con tu billetera.");return;}
+  fuel-=10;food-=2;wallet-=worlds[world].fee;
+  log("Vuelo de "+worlds[world].name+" a "+worlds[world+1].name,-worlds[world].fee);
+  travelling=true;clearMotion();$("shop").close();$("travelName").textContent=worlds[world+1].name;$("travel").hidden=false;updateHUD();
+  setTimeout(()=>{world++;player.x=1080;player.jump=0;player.vy=0;travelling=false;activeStation=null;$("travel").hidden=true;updateHUD();
+    if(world===4)finish(total()>0);else{toast("Llegaste a "+worlds[world].name+". Hay un cajero, una tienda y una gasolinera nuevos.");checkFunds();}
+  },2200);
+}
+function openStation(id){
+  if(travelling||$("shop").open)return;
+  const s=stations.find(s=>s.id===id);if(!s||Math.abs(player.x-s.x)>=90)return;
+  clearMotion();activeStation=id;$("shopTag").textContent=worlds[world].name+" / "+s.sub;$("shopTitle").textContent=s.name;$("shopMessage").textContent="";
+  let html="";
+  if(id==="bank"){
+    $("shopDesc").textContent="Transfiere créditos entre tu cuenta y tu billetera. Retirar no cambia tu presupuesto total.";
+    html='<p id="bankStatus"></p><label for="quantity">Cantidad en USD (sin puntos ni comas)</label><input id="quantity" type="number" min="1" step="1" value="20000"><button id="withdraw">Retirar a la billetera</button><button id="deposit" class="quiet">Depositar en la cuenta</button>';
+  }else if(id==="fuel"||id==="food"){
+    $("shopDesc").textContent=id==="fuel"?"Carga combustible para el siguiente salto. Cada vuelo consume 10 unidades.":"Asegura la alimentación de la tripulación. Cada vuelo consume 2 raciones.";
+    html='<div class="price"><span>Precio por '+(id==="fuel"?'unidad':'ración')+'</span><b>'+money(worlds[world][id])+'</b></div><p id="stockStatus">Billetera: '+money(wallet)+' · En la nave: '+(id==="fuel"?fuel+' unidades':food+' raciones')+'</p><label for="quantity">¿Cuántas quieres comprar?</label><input id="quantity" type="number" min="1" step="1" max="'+(id==="fuel"?40-fuel:16-food)+'" value="'+(id==="fuel"?10:2)+'"><p id="quote"></p><button id="buy">Comprar y cargar en la nave</button>';
+  }else{
+    $("shopDesc").textContent=world===4?"La nave ya está en su destino. Puedes explorar libremente la base.":worlds[world].event;
+    html='<div class="price"><span>Combustible</span><b>'+fuel+' / 10 unidades</b></div><div class="price"><span>Alimentos</span><b>'+food+' / 2 raciones</b></div><div class="price"><span>Tarifa de vuelo</span><b>'+money(worlds[world].fee)+'</b></div><p>Billetera: '+money(wallet)+'</p>'+(world<4?'<button id="launch">Despegar hacia '+worlds[world+1].name+' 🚀</button>':'<p>🌙 ¡Misión completada!</p>');
+  }
+  $("shopContent").innerHTML=html;
+  if(id==="bank"){refreshBankLabels();$("withdraw").onclick=()=>transfer("withdraw");$("deposit").onclick=()=>transfer("deposit");}
+  else if(id==="fuel"||id==="food"){
+    const quote=()=>{const n=Number($("quantity").value);$("quote").textContent=Number.isSafeInteger(n)&&n>0?"Total: "+money(n*worlds[world][id]):"Ingresa una cantidad entera positiva.";};
+    $("quantity").addEventListener("input",quote);quote();$("buy").onclick=()=>buy(id);
+  }else if($("launch"))$("launch").onclick=startFlight;
+  $("shop").showModal();
+}
+// Dibujo del mundo: coordenadas lógicas; la cámara sigue al personaje en móvil.
+function roundRect(x,y,w,h,r,color){ctx.fillStyle=color;ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fill();}
+function text(str,x,y,size,color,align="center"){ctx.font="bold "+size+"px Arial";ctx.fillStyle=color;ctx.textAlign=align;ctx.fillText(str,x,y);}
+function drawBuilding(s){
+  const x=s.x, y=365, glow=Math.abs(player.x-x)<90;
+  if(glow){const g=ctx.createRadialGradient(x,380,10,x,380,110);g.addColorStop(0,s.color+"30");g.addColorStop(1,s.color+"00");ctx.fillStyle=g;ctx.fillRect(x-110,280,220,150);}
+  if(s.id==="ship"){
+    ctx.fillStyle="#273143";ctx.beginPath();ctx.ellipse(x,414,70,12,0,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle="#c9d4df";ctx.beginPath();ctx.moveTo(x,245);ctx.bezierCurveTo(x-35,270,x-40,337,x-28,380);ctx.lineTo(x+28,380);ctx.bezierCurveTo(x+40,337,x+35,270,x,245);ctx.fill();
+    ctx.fillStyle="#d4f28a";ctx.beginPath();ctx.moveTo(x,245);ctx.lineTo(x-19,277);ctx.lineTo(x+19,277);ctx.closePath();ctx.fill();
+    ctx.fillStyle="#735d99";ctx.beginPath();ctx.moveTo(x-26,340);ctx.lineTo(x-57,395);ctx.lineTo(x-20,380);ctx.fill();ctx.beginPath();ctx.moveTo(x+26,340);ctx.lineTo(x+57,395);ctx.lineTo(x+20,380);ctx.fill();
+    ctx.fillStyle="#172e48";ctx.beginPath();ctx.arc(x,307,18,0,Math.PI*2);ctx.fill();ctx.strokeStyle="#8ddde7";ctx.lineWidth=5;ctx.stroke();roundRect(x-22,372,44,13,4,"#363e54");
+    if(!travelling){ctx.fillStyle="#ffb185";ctx.beginPath();ctx.moveTo(x-14,385);ctx.lineTo(x,402+Math.sin(clock*8)*7);ctx.lineTo(x+14,385);ctx.fill();}
+  }else{
+    roundRect(x-76,y-92,152,128,15,"#182332");roundRect(x-81,y-102,162,24,7,s.color);roundRect(x-68,y-76,136,15,3,"#303e4e");
+    text(s.name,x,y-65,10,"#e9eef4");
+    if(s.id==="bank"){
+      roundRect(x-30,y-51,60,72,5,"#71808d");roundRect(x-23,y-44,46,30,3,"#122d36");text("$",x,y-23,20,"#d4f28a");
+      for(let i=0;i<3;i++)for(let j=0;j<3;j++)roundRect(x-17+i*13,y-6+j*7,8,4,1,"#cbd2d4");roundRect(x-68,y+27,136,7,2,"#687e89");
+    }else if(s.id==="food"){
+      roundRect(x-59,y-49,69,61,4,"#345255");for(let i=0;i<3;i++){roundRect(x-52+i*20,y-37,12,17,3,["#ffb185","#d4f28a","#e59eaf"][i]);roundRect(x-52+i*20,y-9,12,13,2,"#c2d5a2");}
+      roundRect(x+24,y-49,33,80,3,"#3d4b5b");roundRect(x+29,y-40,23,40,2,"#75a2ad");roundRect(x-83,y-54,166,15,3,"#ffb185");
+    }else{
+      for(let n=0;n<2;n++){const off=n*60-30;roundRect(x+off-18,y-48,36,65,6,"#8ddde7");roundRect(x+off-12,y-40,24,18,3,"#153141");text("⚡",x+off,y-24,12,"#d4f28a");ctx.strokeStyle="#b5d1d6";ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(x+off+18,y-20);ctx.bezierCurveTo(x+off+36,y-20,x+off+33,y+20,x+off+25,y+10);ctx.stroke();}
+    }
+    roundRect(x-85,400,170,15,4,"#374454");
+  }
+  text(s.sub,x,445,11,s.color);if(glow)text("[E] INTERACTUAR",x,468,10,"#ffffff");
+}
+function drawAstronaut(){
+  const x=player.x,y=413-player.jump, walking=(target!==null||keys.left||keys.right)&&!$("shop").open&&!travelling;
+  const swing=walking?Math.sin(clock*13)*8:0;
+  ctx.save();ctx.translate(x,y);ctx.scale(player.facing,1);
+  ctx.fillStyle="#111c2d55";ctx.beginPath();ctx.ellipse(0,4+player.jump,19,5,0,0,Math.PI*2);ctx.fill();
+  roundRect(-21,-44,13,30,4,"#748795");
+  ctx.strokeStyle="#d1d8df";ctx.lineWidth=10;ctx.lineCap="round";
+  ctx.beginPath();ctx.moveTo(-6,-15);ctx.lineTo(-8+swing,0);ctx.moveTo(6,-15);ctx.lineTo(8-swing,0);ctx.stroke();
+  roundRect(-13+swing,-2,15,7,3,"#293f55");roundRect(1-swing,-2,15,7,3,"#293f55");
+  roundRect(-14,-48,28,33,8,"#edf1ef");roundRect(-8,-39,16,12,3,"#658694");roundRect(-5,-36,10,3,1,"#d4f28a");
+  ctx.strokeStyle="#d6dedd";ctx.lineWidth=8;ctx.beginPath();ctx.moveTo(-12,-40);ctx.lineTo(-18,-23+swing*.5);ctx.moveTo(12,-40);ctx.lineTo(19,-23-swing*.5);ctx.stroke();
+  ctx.fillStyle="#e6eceb";ctx.beginPath();ctx.arc(0,-59,20,0,Math.PI*2);ctx.fill();
+  roundRect(-12,-69,29,20,9,"#173349");roundRect(-6,-65,12,3,2,"#81c9d6");
+  ctx.restore();
+}
+function draw(){
+  const dpr=Math.min(window.devicePixelRatio||1,2),rect=canvas.getBoundingClientRect();
+  if(canvas.width!==Math.round(rect.width*dpr)||canvas.height!==Math.round(rect.height*dpr)){canvas.width=Math.round(rect.width*dpr);canvas.height=Math.round(rect.height*dpr);}
+  screenW=rect.width;screenH=rect.height;
+  ctx.setTransform(dpr,0,0,dpr,0,0);const w=worlds[world],scale=screenH/500,viewW=screenW/scale;
+  const g=ctx.createLinearGradient(0,0,0,screenH);g.addColorStop(0,w.sky[0]);g.addColorStop(1,w.sky[1]);ctx.fillStyle=g;ctx.fillRect(0,0,screenW,screenH);
+  for(let i=0;i<70;i++){const sx=((i*137.51)%1280)/1280*screenW,sy=((i*79.21)%270)/500*screenH;ctx.globalAlpha=.3+Math.sin(clock+i)*.2;ctx.fillStyle="#fff";ctx.fillRect(sx,sy,i%3===0?2:1,i%3===0?2:1);}ctx.globalAlpha=1;
+  ctx.fillStyle=w.planet;ctx.beginPath();ctx.arc(screenW*.78,screenH*.26,screenH*.11,0,Math.PI*2);ctx.fill();ctx.fillStyle="#ffffff18";ctx.beginPath();ctx.arc(screenW*.76,screenH*.245,screenH*.05,0,Math.PI*2);ctx.fill();
+  camera=Math.max(0,Math.min(1280-viewW,player.x-viewW*.45));
+  if(viewW>=1280)camera=-(viewW-1280)/2;
+  ctx.save();ctx.scale(scale,scale);ctx.translate(-camera,0);
+  ctx.fillStyle=w.rock;ctx.beginPath();ctx.moveTo(-500,410);for(let i=-500;i<1800;i+=70)ctx.lineTo(i,270+Math.sin(i*.017)*37+Math.cos(i*.009)*25);ctx.lineTo(1800,500);ctx.lineTo(-500,500);ctx.fill();
+  ctx.fillStyle=w.ground;ctx.fillRect(-500,405,2300,95);ctx.fillStyle="#ffffff0d";ctx.fillRect(-500,405,2300,3);
+  for(let i=0;i<40;i++){const x=(i*113)%1280,y=422+(i*19)%72;ctx.fillStyle=w.rock;ctx.beginPath();ctx.ellipse(x,y,4+i%5,2+i%3,0,0,Math.PI*2);ctx.fill();}
+  ctx.strokeStyle="#e2e2cd30";ctx.lineWidth=2;ctx.setLineDash([8,12]);ctx.beginPath();ctx.moveTo(45,425);ctx.lineTo(1220,425);ctx.stroke();ctx.setLineDash([]);
+  for(const s of stations)drawBuilding(s);drawAstronaut();ctx.restore();
+}
+function tick(time){
+  const dt=Math.min((time-lastTime)/1000||0,.04);lastTime=time;clock+=dt;
+  if(!travelling&&!$("shop").open&&!$("end").open){
+    let direction=(keys.right?1:0)-(keys.left?1:0);
+    if(target!==null){const distance=target-player.x;if(Math.abs(distance)<=240*dt){player.x=target;target=null;const id=autoStation;autoStation=null;if(id)openStation(id);}else direction=Math.sign(distance);}
+    if(direction){player.facing=direction;player.x=Math.max(35,Math.min(1245,player.x+direction*240*dt));}
+    if(player.jump>0||player.vy>0){player.jump+=player.vy*dt;player.vy-=500*dt;if(player.jump<0){player.jump=0;player.vy=0;}}
+  }
+  draw();requestAnimationFrame(tick);
+}
+canvas.addEventListener("click",event=>{
+  if(travelling||$("shop").open||$("end").open)return;
+  const r=canvas.getBoundingClientRect(),scale=r.height/500,x=(event.clientX-r.left)/scale+camera,y=(event.clientY-r.top)/scale;
+  const station=stations.find(s=>Math.abs(s.x-x)<88 && y>235 && y<475);
+  if(station)goTo(station.id);else{target=Math.max(35,Math.min(1245,x));autoStation=null;canvas.focus({preventScroll:true});}
+});
+window.addEventListener("keydown",e=>{
+  if($("shop").open||$("end").open||travelling||e.ctrlKey||e.metaKey||e.altKey)return;
+  const k=e.key.toLowerCase();
+  if(["arrowleft","arrowright","a","d","e"," "].includes(k))e.preventDefault();
+  if(k==="arrowleft"||k==="a"){keys.left=true;target=null;autoStation=null;}
+  if(k==="arrowright"||k==="d"){keys.right=true;target=null;autoStation=null;}
+  if(k==="e"&&!e.repeat)interact();if(k===" "&&player.jump===0)player.vy=240;
+});
+window.addEventListener("keyup",e=>{const k=e.key.toLowerCase();if(k==="arrowleft"||k==="a")keys.left=false;if(k==="arrowright"||k==="d")keys.right=false;});
+window.addEventListener("blur",()=>{keys.left=false;keys.right=false;});
+for(const direction of ["left","right"]){const b=$(direction);b.addEventListener("pointerdown",e=>{e.preventDefault();if(travelling||$("shop").open||$("end").open)return;target=null;autoStation=null;keys[direction]=true;b.setPointerCapture(e.pointerId);});for(const name of ["pointerup","pointercancel","lostpointercapture"])b.addEventListener(name,()=>keys[direction]=false);}
+for(const b of document.querySelectorAll("[data-go]"))b.addEventListener("click",()=>goTo(b.dataset.go));
+$("interact").onclick=interact;
+$("shop").addEventListener("close",()=>{activeStation=null;canvas.focus({preventScroll:true});});
+$("endClose").onclick=()=>$("end").close();
+function askReset(){if(travelling)return;if(confirm("¿Empezar otra vez con USD 100.000? Se perderá esta partida."))reset();}
+$("restart").onclick=askReset;$("endRestart").onclick=()=>{reset();};
+reset();requestAnimationFrame(tick);
+
+</script></body></html>
